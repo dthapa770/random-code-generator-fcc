@@ -1,24 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Button from "./component/button/button.component";
+import DisplayQuote from "./component/display/display-quote.component";
 
 const App = () => {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
 
-  useEffect(() => {
+  const onClickHandler = () => {
     fetch("http://api.quotable.io/random")
       .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, []);
-
-  const onClickHandler = () => {
-    console.log("---");
+      .then((data) => {
+        setQuote(data.content);
+        setAuthor(data.author);
+      });
   };
 
   return (
     <div className="App">
-      <Button buttonName="Generate Quote" onClickHandler={onClickHandler} />
+      <div className="main-container">
+        <DisplayQuote quote={quote} author={author} />
+        <Button buttonName="Generate Quote" onClickHandler={onClickHandler} />
+      </div>
     </div>
   );
 };
